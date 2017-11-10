@@ -1,0 +1,24 @@
+version: '2'
+
+services:
+  mongo-database:
+    container_name: umayux-mongo
+    image: mongo
+    environment:
+      - MONGO_DATA_DIR=./database/mongo
+      - MONGO_LOG_DIR=./database/mongo
+    volumes:
+      - ./database/mongo:/data/db
+    ports:
+      - 27987:17863
+    tty: true
+    command: mongod --dbpath /data/db --directoryperdb --port 17863
+
+  iis-server:
+    container_name: umayux-dotnet
+    build:
+      context: ./aspnetapp/
+      dockerfile: Dockerfile
+    ports:
+      - 27990:80
+    tty: true
